@@ -7,6 +7,8 @@ public class Square
 {
 	int size;
 	
+	int counter;
+	
 	int x;
 	int y;
 	
@@ -15,8 +17,6 @@ public class Square
 	
 	boolean wayX;
 	boolean wayY;
-	
-	public static int counter = 0;
 	
 	public Square()
 	{	
@@ -28,7 +28,7 @@ public class Square
 		this.x = random.nextInt(700 - this.size);
 		this.y = random.nextInt(500 - this.size);
 		this.countColor = random.nextInt(5);
-		Square.counter++;
+		this.counter = 0;
 	}
 	
 	public int getSize()
@@ -92,22 +92,18 @@ public class Square
 	
 	public void interSquare(Square squareTwo)
 	{
-		if(this.x == squareTwo.x || this.x + this.size == squareTwo.x + squareTwo.size)
-		{
-			if((this.y < squareTwo.y && this.y > squareTwo.y+squareTwo.size) || (this.y + this.size < squareTwo.y && this.y + this.size > squareTwo.y+squareTwo.size));
-			{
-				shiftColor();
-				changeSize();
-			}
+		if (this.x > squareTwo.x + squareTwo.size || /* первый правее второго */
+			this.x + this.size < squareTwo.x || /* первый левее второго */
+		    this.y > squareTwo.y + squareTwo.size || /* первый ниже второго */
+		    this.y + this.size < squareTwo.y /* первый выше второго */
+		    ) 
+		{/*не пересекаются*/} 
+		else {
+			shiftColor();
+			changeSize();
+		    // пересекаются или совпадают
 		}
-		if(this.y == squareTwo.y || this.y + this.size == squareTwo.y + squareTwo.size)
-		{
-			if((this.x < squareTwo.x && this.x > squareTwo.x+squareTwo.size) || (this.x + this.size < squareTwo.x && this.x + this.size > squareTwo.x+squareTwo.size))
-			{
-				shiftColor();
-				changeSize();
-			}
-		}
+		
 	}
 
 	public void waySquare()
@@ -115,26 +111,18 @@ public class Square
 		if(this.x + this.size >= 785)
 		{
 			this.wayX = false;
-			shiftColor();
-			changeSize();
 		}
 		if(this.x == 0)
 		{
 			this.wayX = true;
-			shiftColor();
-			changeSize();
 		}
 		if(this.y + this.size >= 560)
 		{
 			this.wayY = false;
-			shiftColor();
-			changeSize();
 		}
 		if(this.y == 0)
 		{
 			this.wayY = true;
-			shiftColor();
-			changeSize();
 		}
 		
 		if(this.wayX == true)

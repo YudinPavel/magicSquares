@@ -5,46 +5,49 @@ import java.util.concurrent.TimeUnit;
 
 public class Application 
 {
+	public static int numSquares = 4;
+	
 	public static void main(String[] args) 
 	{
-		Square aSquares = new Square();
-		Window mainWindow = new Window(aSquares);
+
+		Square[] arrSquares = new Square[numSquares];
+		for(int i = 0; i < numSquares; ++i)
+				arrSquares[i] = new Square(); //arrSquares[i] = new Square(100*i, 10*i, 50, Color.GREEN);
+	
+		Window mainWindow = new Window(arrSquares);
 		
 		mainWindow.setVisible(true);
-		while(true){
-			mainWindow.updateWindow(aSquares);
-			aSquares.waySquare();
-			
-			try
+		
+		for( ; ; )
+		{
+			for(int i = 0; i < numSquares; ++i)
 			{
-				TimeUnit.MILLISECONDS.sleep(10);
-			} 
-			catch (InterruptedException e) 
+				arrSquares[i].waySquare();
+			}
+			for(int i = 0; i < numSquares; ++i)
 			{
-				e.printStackTrace();
+				for(int j = 0; j < numSquares ; ++j)
+				{
+					if(i != j)
+					{
+						arrSquares[i].interSquare(arrSquares[j]);
+					}
+				}
 			}
 			
-
+			appPause(25);
 		}
-		
-		
-//		int numSquares = 3;
-		
-//		Square[] aSquares = new Square[numSquares];
-//		for(int i = 0; i < numSquares; ++i)
-//			aSquares[i] = new Square(20*i+10,5*i+10, 50, Color.BLACK);
-		
-		
-//		Window mainWindow = new Window(aSquares);
-		
-//		mainWindow.setVisible(true);
-//		for(int i = 0; ; ++i)
-//		{
-//			for(int j = 0; j < numSquares; ++j)
-//			{
-//				aSquares[j].classSquareLogic();
-//				mainWindow.updateWindow(j);
-//			}
-//		}
+	}
+	
+	public static void appPause(int pauseTime)
+	{
+		try
+		{
+			TimeUnit.MILLISECONDS.sleep(pauseTime);
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }
